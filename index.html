@@ -6,34 +6,20 @@
     <title>NutriBot AI - Feedback de Performance</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
-        /* ... (COLE TODO O SEU CSS ORIGINAL AQUI - SEM NENHUMA MUDANÇA) ... */
+        /* --- ESTILOS GLOBAIS (MESMA BASE DA SUA PÁGINa) --- */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         :root { --bg-dark: #0A0A0A; --bg-card: #141414; --primary-accent: #00A3FF; --secondary-accent: #FF4D00; --highlight-accent: #AFFF33; --text-light: #FFFFFF; --text-secondary: #B3B3B3; --border-color: #2F2F2F; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); line-height: 1.7; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); line-height: 1.7; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;}
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        section { padding: 120px 0; }
-        h1, h2, h3 { font-weight: 900; line-height: 1.1; }
-        h1 { font-size: 4.5rem; letter-spacing: -3px; }
-        h2 { font-size: 3.5rem; letter-spacing: -2px; margin-bottom: 20px; }
-        h3 { font-size: 2.5rem; color: var(--text-light); margin-bottom: 20px;}
-        p { font-size: 1.2rem; max-width: 700px; color: var(--text-secondary); }
-        .text-center { text-align: center; }
-        .text-center p { margin-left: auto; margin-right: auto; }
-        .logo-link { position: absolute; top: 25px; left: 30px; z-index: 1000; transition: transform 0.2s ease; }
-        .logo-link:hover { transform: scale(1.05); }
-        .logo-link img { height: 150px; }
+        h2 { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; text-align: center;}
+        p { font-size: 1.2rem; max-width: 700px; color: var(--text-secondary); text-align: center; margin-left: auto; margin-right: auto;}
         .cta-button { display: inline-block; color: #000; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-size: 1.2rem; font-weight: 900; transition: transform 0.2s ease, box-shadow 0.2s ease; border: none; cursor: pointer; white-space: nowrap; }
         .cta-button:hover { transform: scale(1.05); }
-        footer { background-color: #000; color: var(--text-secondary); text-align: center; padding: 40px 0; border-top: 1px solid var(--border-color); }
-        footer p { font-size: 0.9rem; margin: 0 auto 10px; }
-        footer a { color: var(--primary-accent); text-decoration: none; font-weight: 600; }
-        @media (max-width: 768px) {
-            h1 { font-size: 2.8rem; } h2 { font-size: 2.5rem; } section { padding: 80px 0; }
-        }
-
-        /* <<< NOVO CSS PARA O FORMULÁRIO DE FEEDBACK >>> */
+        .cta-button:disabled { background-color: #888; cursor: not-allowed; transform: scale(1); box-shadow: none; }
+        
+        /* --- CSS PARA O FORMULÁRIO DE FEEDBACK (MESMO DESIGN) --- */
         .feedback-form-container {
             max-width: 700px;
             margin: 0 auto;
@@ -75,11 +61,10 @@
             background: var(--primary-accent);
             box-shadow: 0 0 25px rgba(0, 163, 255, 0.5);
         }
-        /* Estilo para as estrelas de avaliação */
         .rating-stars {
             display: flex;
             justify-content: center;
-            flex-direction: row-reverse; /* Inverte a ordem para a mágica do CSS funcionar */
+            flex-direction: row-reverse;
         }
         .rating-stars input[type="radio"] {
             display: none;
@@ -98,17 +83,16 @@
     </style>
 </head>
 <body>
-    <a href="#" class="logo-link"><img src="logo.png" alt="NutriBot AI Logo"></a>
 
     <main>
-        <section id="feedback-section" class="text-center">
+        <section id="feedback-section">
             <div class="container">
                 <h2>Sua Opinião Vale Ouro (e Créditos!)</h2>
-                <p>Seu feedback nos ajuda a construir o melhor sistema operacional de performance. Como agradecimento, você receberá 30 créditos de bônus no bot assim que enviar sua avaliação.</p>
+                <p style="margin-bottom: 40px;">Seu feedback nos ajuda a construir o melhor sistema operacional de performance. Como agradecimento, você receberá 30 créditos de bônus no bot assim que enviar sua avaliação.</p>
                 
                 <div class="feedback-form-container">
-                    <!-- O action aponta para o seu endpoint do Formspree -->
-                    <form id="feedback-form" action="https://formspree.io/f/xovyqnkl" method="POST" class="feedback-form">
+                    <!-- A tag form não precisa mais dos atributos action e method -->
+                    <form id="feedback-form" class="feedback-form">
                         
                         <div class="form-group">
                             <label>1. Qual sua avaliação geral sobre o NutriBot AI?</label>
@@ -126,9 +110,10 @@
                             <textarea id="feedback-text" name="feedback_text" placeholder="Seja específico! Ex: 'Gostaria que a análise de fotos identificasse marcas de produtos...' ou 'Achei o registro de treino um pouco lento...'" required></textarea>
                         </div>
                         
-                        <!-- Campos Ocultos: Serão preenchidos pelo JavaScript -->
+                        <!-- Campos Ocultos para todos os dados do usuário -->
                         <input type="hidden" id="user-id-field" name="telegram_user_id">
-                        <input type="hidden" id="redirect-url-field" name="_next">
+                        <input type="hidden" id="name-field" name="user_name">
+                        <input type="hidden" id="email-field" name="user_email">
                         
                         <button type="submit" class="cta-button">Enviar Avaliação e Resgatar Créditos</button>
                     </form>
@@ -137,38 +122,67 @@
         </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 NutriBot AI. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript para capturar o ID do usuário e configurar o redirecionamento -->
+    <!-- <<< ALTERADO >>> SCRIPT DE ENVIO E REDIRECIONAMENTO COM JAVASCRIPT -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ** IMPORTANTE: Substitua 'seu_bot_username_aqui' pelo nome de usuário do seu bot **
-            const botUsername = 'seu_bot_username_aqui';
+            // --- INÍCIO DA CONFIGURAÇÃO ---
+            const botUsername = 'Nutriiastudioweb_bot'; // Seu nome de usuário do bot
+            const formspreeURL = 'https://formspree.io/f/xovyqnkl'; // URL do seu formulário de feedback
+            // --- FIM DA CONFIGURAÇÃO ---
+            
+            const form = document.getElementById('feedback-form');
+            const userIdField = document.getElementById('user-id-field');
+            const nameField = document.getElementById('name-field');
+            const emailField = document.getElementById('email-field');
+            const button = form.querySelector('.cta-button');
 
-            // 1. Pega os parâmetros da URL (ex: ?user_id=12345)
             const params = new URLSearchParams(window.location.search);
             const userId = params.get('user_id');
+            const userName = params.get('name');
+            const userEmail = params.get('email');
 
-            const userIdField = document.getElementById('user-id-field');
-            const redirectUrlField = document.getElementById('redirect-url-field');
-            const form = document.getElementById('feedback-form');
+            let telegramRedirectURL = '';
 
             if (userId) {
-                // 2. Insere o ID do usuário no campo oculto do formulário
                 userIdField.value = userId;
-
-                // 3. Monta a URL de redirecionamento de volta para o bot com o "deep link"
-                const redirectUrl = `https://t.me/${botUsername}?start=feedback_success_${userId}`;
-                redirectUrlField.value = redirectUrl;
-
+                nameField.value = userName || 'Não informado';
+                emailField.value = userEmail || 'Não informado';
+                telegramRedirectURL = `https://t.me/${botUsername}?start=feedback_success_${userId}`;
             } else {
-                // Se não houver ID, desabilita o formulário para evitar envios anônimos
-                form.innerHTML = '<p style="color: var(--secondary-accent);">Erro: ID de usuário não encontrado. Por favor, acesse esta página através do link fornecido no bot do Telegram.</p>';
+                form.innerHTML = '<p style="color: var(--secondary-accent);">Erro: Link de avaliação inválido. Por favor, acesse esta página através do link fornecido no bot do Telegram.</p>';
+                return;
             }
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const data = new FormData(form);
+                button.disabled = true;
+                button.textContent = 'ENVIANDO...';
+
+                try {
+                    const response = await fetch(formspreeURL, {
+                        method: 'POST',
+                        body: data,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        console.log('Feedback enviado com sucesso!');
+                        // Redireciona para o Telegram após o sucesso
+                        window.location.href = telegramRedirectURL;
+                    } else {
+                        throw new Error('Falha no envio do formulário para o Formspree.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao enviar o feedback:', error);
+                    alert('Ocorreu um erro ao enviar sua avaliação. Por favor, tente novamente.');
+                    button.disabled = false;
+                    button.textContent = 'Enviar Avaliação e Resgatar Créditos';
+                }
+            });
         });
     </script>
 </body>
