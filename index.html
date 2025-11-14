@@ -6,22 +6,23 @@
     <title>NutriBot AI - Feedback de Performance</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
-        /* --- ESTILOS GLOBAIS (MESMA BASE DA SUA PÁGINA) --- */
+        /* --- ESTILOS GLOBAIS --- */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         :root { --bg-dark: #0A0A0A; --bg-card: #141414; --primary-accent: #00A3FF; --secondary-accent: #FF4D00; --highlight-accent: #AFFF33; --text-light: #FFFFFF; --text-secondary: #B3B3B3; --border-color: #2F2F2F; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); line-height: 1.7; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;}
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        h2 { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; text-align: center;}
-        p { font-size: 1.2rem; max-width: 700px; color: var(--text-secondary); text-align: center; margin-left: auto; margin-right: auto;}
-        .cta-button { display: inline-block; color: #000; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-size: 1.2rem; font-weight: 900; transition: transform 0.2s ease, box-shadow 0.2s ease; border: none; cursor: pointer; white-space: nowrap; }
+        .container { max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 20px; }
+        h2 { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; text-align: center; overflow-wrap: break-word; /* Garante a quebra de palavras longas */ }
+        p { font-size: 1.2rem; max-width: 700px; color: var(--text-secondary); text-align: center; margin-left: auto; margin-right: auto; overflow-wrap: break-word; /* Garante a quebra de palavras longas */ }
+        .cta-button { display: inline-block; color: #000; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-size: 1.2rem; font-weight: 900; transition: transform 0.2s ease, box-shadow 0.2s ease; border: none; cursor: pointer; text-align: center; } /* Removido white-space daqui para colocar no hover */
         .cta-button:hover { transform: scale(1.05); }
         .cta-button:disabled { background-color: #888; cursor: not-allowed; transform: scale(1); box-shadow: none; }
         
-        /* --- CSS PARA O FORMULÁRIO DE FEEDBACK (MESMO DESIGN) --- */
+        /* --- CSS PARA O FORMULÁRIO DE FEEDBACK --- */
         .feedback-form-container {
             max-width: 700px;
+            width: 100%;
             margin: 0 auto;
             background-color: var(--bg-card);
             padding: 50px;
@@ -81,33 +82,38 @@
             color: #FFC107;
         }
 
-        /* <<< ADICIONADO >>> ESTILOS PARA DISPOSITIVOS MÓVEIS (RESPONSIVIDADE) */
+        /* <<< CORREÇÃO >>> ESTILOS PARA DISPOSITIVOS MÓVEIS (RESPONSIVIDADE) */
         @media screen and (max-width: 768px) {
             body {
-                padding: 15px; /* Reduz o espaçamento nas laterais da página */
+                padding: 15px 10px; 
+                align-items: flex-start; /* Alinha ao topo para evitar cortes */
+                padding-top: 40px;
             }
             .container {
                 padding: 0 10px;
             }
             h2 {
-                font-size: 2.5rem; /* Diminui o tamanho do título principal */
+                font-size: 2.2rem; /* Tamanho mais seguro para telas pequenas */
                 letter-spacing: -1px;
+                line-height: 1.2;
             }
             p {
-                font-size: 1rem; /* Diminui o texto do parágrafo */
+                font-size: 1rem;
             }
             .feedback-form-container {
-                padding: 25px; /* Diminui o espaçamento interno do formulário */
+                padding: 25px 20px;
             }
             .form-group label {
                 font-size: 1.1rem;
             }
             .rating-stars label {
-                font-size: 2.5rem; /* Diminui o tamanho das estrelas */
+                font-size: 2.5rem;
             }
             .cta-button {
-                padding: 15px 25px;
+                padding: 18px 25px; /* Aumenta o padding vertical para acomodar texto quebrado */
                 font-size: 1.1rem;
+                white-space: normal;  /* <<< A CORREÇÃO PRINCIPAL ESTÁ AQUI */
+                line-height: 1.4;      /* Melhora o espaçamento se o texto quebrar em 2 linhas */
             }
         }
     </style>
