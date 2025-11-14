@@ -80,6 +80,228 @@
         .rating-stars label:hover ~ label {
             color: #FFC107;
         }
+
+        /* --- <<< ADICIONADO >>> MEDIA QUERIES PARA RESPONSIVIDADE --- */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                align-items: flex-start; /* Alinha o conteúdo ao topo em telas menores */
+            }
+
+            h2 {
+                font-size: 2.5rem; /* Diminui o título para caber melhor */
+                letter-spacing: -1px;
+            }
+
+            p {
+                font-size: 1rem; /* Diminui o texto para melhor legibilidade */
+            }
+
+            .feedback-form-container {
+                padding: 25px; /* Reduz o espaçamento interno do formulário */
+            }
+
+            .cta-button {
+                font-size: 1rem;
+                padding: 15px 30px;
+            }
+
+            .rating-stars label {
+                font-size: 2.5rem; /* Diminui o tamanho das estrelas */
+            }
+
+            .form-group label {
+                font-size: 1.1rem; /* Diminui o texto das perguntas */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <section id="feedback-section">
+            <div class="container">
+                <h2>Sua Opinião Vale Ouro (e Créditos!)</h2>
+                <p style="margin-bottom: 40px;">Seu feedback nos ajuda a construir o melhor sistema operacional de performance. Como agradecimento, você receberá 30 créditos de bônus no bot assim que enviar sua avaliação.</p>
+                
+                <div class="feedback-form-container">
+                    <!-- A tag form não precisa mais dos atributos action e method -->
+                    <form id="feedback-form" class="feedback-form">
+                        
+                        <div class="form-group">
+                            <label>1. Qual sua avaliação geral sobre o NutriBot AI?</label>
+                            <div class="rating-stars">
+                                <input type="radio" id="star5" name="rating" value="5 Estrelas" required><label for="star5">★</label>
+                                <input type="radio" id="star4" name="rating" value="4 Estrelas"><label for="star4">★</label>
+                                <input type="radio" id="star3" name="rating" value="3 Estrelas"><label for="star3">★</label>
+                                <input type="radio" id="star2" name="rating" value="2 Estrelas"><label for="star2">★</label>
+                                <input type="radio" id="star1" name="rating" value="1 Estrela"><label for="star1">★</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feedback-text">2. Quais melhorias, sugestões ou críticas você tem?</label>
+                            <textarea id="feedback-text" name="feedback_text" placeholder="Seja específico! Ex: 'Gostaria que a análise de fotos identificasse marcas de produtos...' ou 'Achei o registro de treino um pouco lento...'" required></textarea>
+                        </div>
+                        
+                        <!-- Campos Ocultos para todos os dados do usuário -->
+                        <input type="hidden" id="user-id-field" name="telegram_user_id">
+                        <input type="hidden" id="name-field" name="user_name">
+                        <input type="hidden" id="email-field" name="user_email">
+                        
+                        <button type="submit" class="cta-button">Enviar Avaliação e Resgatar Créditos</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- SCRIPT DE ENVIO E REDIRECIONAMENTO COM JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- INÍCIO DA CONFIGURAÇÃO ---
+            const botUsername = 'Nutriiastudioweb_bot'; // Seu nome de usuário do bot
+            const formspreeURL = 'https://formspree.io/f/xovyqnkl'; // URL do seu formulário de feedback
+            // --- FIM DA CONFIGURAÇÃO ---
+            
+            const form = document.getElementById('feedback-form');
+            const userIdField = document.getElementById('user-id-field');
+            const nameField = document.getElementById('name-field');
+            const emailField = document.getElementById('email-field');
+            const button = form.querySelector('.cta-button');
+
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get('user_id');
+            const userName = params.get('name');
+            const userEmail = params.get('email');
+
+            let telegramRedirectURL = '';
+
+            if (userId) {
+                userIdField.value = userId;
+                nameField.value = userName || 'Não informado';
+                emailField.value = userEmail || 'Não informado';
+                telegramRedirectURL = `https://t.me/${botUsername}?start=feedback_success_${userId}`;
+            } else {
+                form.innerHTML = '<p style="color: var(--secondary-accent);">Erro: Link de avaliação inválido. Por favor, acesse esta página através do link fornecido no bot do Telegram.</p>';
+                return;
+            }
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const data = new FormData(form);
+                button.disabled = true;
+                button.textContent = 'ENVIANDO...';
+
+                try {
+                    const response = await fetch(formspreeURL, {
+                        method: 'POST',
+                        body: data,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        console.log('Feedback enviado com sucesso!');
+                        // Redireciona para o Telegram após o sucesso
+                        window.location.href = telegramRedirectURL;
+                    } else {
+                        throw new Error('Falha no envio do formulário para o Formspree.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao enviar o feedback:', error);
+                    alert('Ocorreu um erro ao enviar sua avaliação. Por favor, tente novamente.');
+                    button.disabled = false;
+                    button.textContent = 'Enviar Avaliação e Resgatar Créditos';
+                }
+            });
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriBot AI - Feedback de Performance</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        /* --- ESTILOS GLOBAIS (MESMA BASE DA SUA PÁGINa) --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        :root { --bg-dark: #0A0A0A; --bg-card: #141414; --primary-accent: #00A3FF; --secondary-accent: #FF4D00; --highlight-accent: #AFFF33; --text-light: #FFFFFF; --text-secondary: #B3B3B3; --border-color: #2F2F2F; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); line-height: 1.7; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;}
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        h2 { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; text-align: center;}
+        p { font-size: 1.2rem; max-width: 700px; color: var(--text-secondary); text-align: center; margin-left: auto; margin-right: auto;}
+        .cta-button { display: inline-block; color: #000; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-size: 1.2rem; font-weight: 900; transition: transform 0.2s ease, box-shadow 0.2s ease; border: none; cursor: pointer; white-space: nowrap; }
+        .cta-button:hover { transform: scale(1.05); }
+        .cta-button:disabled { background-color: #888; cursor: not-allowed; transform: scale(1); box-shadow: none; }
+        
+        /* --- CSS PARA O FORMULÁRIO DE FEEDBACK (MESMO DESIGN) --- */
+        .feedback-form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: var(--bg-card);
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .form-group {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+        .form-group textarea {
+            width: 100%;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            min-height: 150px;
+            resize: vertical;
+        }
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 15px rgba(0, 163, 255, 0.3);
+        }
+        .feedback-form .cta-button {
+            width: 100%;
+            background: var(--primary-accent);
+            box-shadow: 0 0 25px rgba(0, 163, 255, 0.5);
+        }
+        .rating-stars {
+            display: flex;
+            justify-content: center;
+            flex-direction: row-reverse;
+        }
+        .rating-stars input[type="radio"] {
+            display: none;
+        }
+        .rating-stars label {
+            font-size: 3rem;
+            color: #444;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .rating-stars input[type="radio"]:checked ~ label,
+        .rating-stars label:hover,
+        .rating-stars label:hover ~ label {
+            color: #FFC107;
+        }
     </style>
 </head>
 <body>
